@@ -9,8 +9,8 @@ def userInput ():
             print("Only positive number")
             return -1
         
-        elif number > 255:
-            print("A number must be less then 256")
+        elif number > 100:
+            print("A number must be less then 100")
             return -1
         
         else:
@@ -24,21 +24,22 @@ def userInput ():
             return -1
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup (26, GPIO.OUT)
+GPIO.setup (22, GPIO.OUT)
 
-p = GPIO.PWM(26, 0.5)    #channel = 26, frequency = 50Hz
-p.start(0)              #where dc is the duty cycle (0.0 <= dc <= 100.0)
+p = GPIO.PWM(22, 100)    #channel = 26, frequency = 50Hz
+p.start(0)               #where dc is the duty cycle (0.0 <= dc <= 100.0)
 
 
 try:
     while True:
-        print("Enter the duty cycle") #fladgkjfasf
+        print("Enter the % for duty cycle") #fladgkjfasf
         dc = userInput()
-        if dc != -1:
-            p.ChangeDutyCycle(dc) 
+        p.ChangeDutyCycle(dc)
+        print (f"Estimated volt: {dc/100 * 3.3}")
 
 
 finally:
-    GPIO.output (26, 0)
+    p.stop()
+    GPIO.output (22, 0)
     GPIO.cleanup()
 
